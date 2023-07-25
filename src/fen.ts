@@ -10,6 +10,7 @@ const roles: { [letter: string]: cg.Role } = {
   b: 'bishop',
   q: 'queen',
   k: 'king',
+  v: 'valet',
 };
 
 const letters = {
@@ -19,6 +20,7 @@ const letters = {
   bishop: 'b',
   queen: 'q',
   king: 'k',
+  valet: 'v',
 };
 
 export function read(fen: cg.FEN): cg.Pieces {
