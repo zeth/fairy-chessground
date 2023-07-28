@@ -28,11 +28,6 @@ const rook: Mobility = (x1, y1, x2, y2) => {
   return x1 === x2 || y1 === y2;
 };
 
-// TODO: make sure it can only move one space and in all directions
-const valet: Mobility = (x1, y1, x2, y2) => {
-  return x1 === x2 || y1 === y2;
-};
-
 export const queen: Mobility = (x1, y1, x2, y2) => {
   return bishop(x1, y1, x2, y2) || rook(x1, y1, x2, y2);
 };
@@ -72,12 +67,100 @@ export function premove(pieces: cg.Pieces, key: cg.Key, canCastle: boolean): cg.
         ? bishop
         : r === 'rook'
         ? rook
-        : r === 'valet'
-        ? valet
         : r === 'queen'
         ? queen
-        : king(piece.color, rookFilesOf(pieces, piece.color), canCastle);
+        : r === 'king'
+        ? king(piece.color, rookFilesOf(pieces, piece.color), canCastle)
+        : r === 'valet'
+        ? valet
+        : r === 'elephant'
+        ? elephant
+        : r === 'fool'
+        ? fool
+        : r === 'warden'
+        ? warden
+        : r === 'prince'
+        ? prince
+        : r === 'lady'
+        ? lady
+        : r === 'dragon'
+        ? dragon
+        : r === 'arma'
+        ? arma
+        : r === 'monk'
+        ? monk
+        : r === 'goshawk'
+        ? goshawk
+        : r === 'unicorn'
+        ? unicorn
+        : r === 'cannon'
+        ? cannon
+        : standard;
   return util.allPos
     .filter(pos2 => (pos[0] !== pos2[0] || pos[1] !== pos2[1]) && mobility(pos[0], pos[1], pos2[0], pos2[1]))
     .map(util.pos2key);
 }
+
+const valet: Mobility = (x1, y1, x2, y2) => {
+  return diff(x1, x2) < 2 && diff(y1, y2) < 2;
+};
+
+
+const elephant: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return xd === yd && xd === 2;
+};
+
+const fool: Mobility = (x1, y1, x2, y2) => diff(x1, x2) === diff(y1, y2) && diff(x1, x2) === 1;
+
+const warden: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return (xd === 1 && yd === 0) || (xd === 0 && yd === 1);
+};
+
+const prince: Mobility = (x1, y1, x2, y2) => {
+  return valet(x1, y1, x2, y2) || knight(x1, y1, x2, y2);
+};
+
+const lady: Mobility = (x1, y1, x2, y2) => {
+  return bishop(x1, y1, x2, y2) || warden(x1, y1, x2, y2);
+};
+
+const dragon: Mobility = (x1, y1, x2, y2) => {
+  return knight(x1, y1, x2, y2) || queen(x1, y1, x2, y2);
+};
+
+const arma: Mobility = (x1, y1, x2, y2) => {
+  return rook(x1, y1, x2, y2) || fool(x1, y1, x2, y2);
+};
+
+const monk: Mobility = (x1, y1, x2, y2) => {
+  return diff(x1, x2) < 2|| fool(x1, y1, x2, y2);
+};
+
+// The standard can't move at all
+// @ts-expect-error
+const standard: Mobility = (x1, y1, x2, y2) => {
+  return false;
+}
+
+/* Beta pieces */
+
+// TODO: make this correct
+const unicorn: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return knight(x1, y1, x2, y2) || (xd === 1 && yd === 3) || (xd === 3 && yd === 1);
+};
+
+// TODO: do we need to handle difference between move and take?
+const goshawk: Mobility = (x1, y1, x2, y2) => {
+  return bishop(x1, y1, x2, y2) || knight(x1, y1, x2, y2);
+};
+
+// TODO: do we need to handle difference between move and take?
+const cannon: Mobility = (x1, y1, x2, y2) => {
+  return rook(x1, y1, x2, y2) || knight(x1, y1, x2, y2);
+};
