@@ -95,6 +95,8 @@ export function premove(pieces: cg.Pieces, key: cg.Key, canCastle: boolean): cg.
         ? unicorn
         : r === 'cannon'
         ? cannon
+        : r === 'junk'
+        ? junk
         : standard;
   return util.allPos
     .filter(pos2 => (pos[0] !== pos2[0] || pos[1] !== pos2[1]) && mobility(pos[0], pos[1], pos2[0], pos2[1]))
@@ -163,4 +165,9 @@ const goshawk: Mobility = (x1, y1, x2, y2) => {
 // TODO: do we need to handle difference between move and take?
 const cannon: Mobility = (x1, y1, x2, y2) => {
   return rook(x1, y1, x2, y2) || knight(x1, y1, x2, y2);
+};
+
+// @ts-expect-error
+const junk: Mobility = (x1, y1, x2, y2) => {
+  return x1 === x2;
 };
