@@ -97,6 +97,8 @@ export function premove(pieces: cg.Pieces, key: cg.Key, canCastle: boolean): cg.
         ? cannon
         : r === 'junk'
         ? junk
+        : r === 'zebra'
+        ? zebra
         : standard;
   return util.allPos
     .filter(pos2 => (pos[0] !== pos2[0] || pos[1] !== pos2[1]) && mobility(pos[0], pos[1], pos2[0], pos2[1]))
@@ -170,4 +172,10 @@ const cannon: Mobility = (x1, y1, x2, y2) => {
 // @ts-expect-error
 const junk: Mobility = (x1, y1, x2, y2) => {
   return x1 === x2;
+};
+
+export const zebra: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return (xd === 1 && yd === 2) || (xd === 2 && yd === 1);
 };
