@@ -20,7 +20,7 @@ export const knight: Mobility = (x1, y1, x2, y2) => {
   return (xd === 1 && yd === 2) || (xd === 2 && yd === 1);
 };
 
-const bishop: Mobility = (x1, y1, x2, y2) => {
+export const bishop: Mobility = (x1, y1, x2, y2) => {
   return diff(x1, x2) === diff(y1, y2);
 };
 
@@ -105,43 +105,45 @@ export function premove(pieces: cg.Pieces, key: cg.Key, canCastle: boolean): cg.
     .map(util.pos2key);
 }
 
-const valet: Mobility = (x1, y1, x2, y2) => {
+export const valet: Mobility = (x1, y1, x2, y2) => {
   return diff(x1, x2) < 2 && diff(y1, y2) < 2;
 };
 
 
-const elephant: Mobility = (x1, y1, x2, y2) => {
+export const elephant: Mobility = (x1, y1, x2, y2) => {
   const xd = diff(x1, x2);
   const yd = diff(y1, y2);
   return xd === yd && xd === 2;
 };
 
-const fool: Mobility = (x1, y1, x2, y2) => diff(x1, x2) === diff(y1, y2) && diff(x1, x2) === 1;
+export const fool: Mobility = (x1, y1, x2, y2) => diff(x1, x2) === diff(y1, y2) && diff(x1, x2) === 1;
 
-const warden: Mobility = (x1, y1, x2, y2) => {
+export const warden: Mobility = (x1, y1, x2, y2) => {
   const xd = diff(x1, x2);
   const yd = diff(y1, y2);
   return (xd === 1 && yd === 0) || (xd === 0 && yd === 1);
 };
 
-const prince: Mobility = (x1, y1, x2, y2) => {
+export const prince: Mobility = (x1, y1, x2, y2) => {
   return valet(x1, y1, x2, y2) || knight(x1, y1, x2, y2);
 };
 
-const lady: Mobility = (x1, y1, x2, y2) => {
+export const lady: Mobility = (x1, y1, x2, y2) => {
   return bishop(x1, y1, x2, y2) || warden(x1, y1, x2, y2);
 };
 
-const dragon: Mobility = (x1, y1, x2, y2) => {
+export const dragon: Mobility = (x1, y1, x2, y2) => {
   return knight(x1, y1, x2, y2) || queen(x1, y1, x2, y2);
 };
 
-const arma: Mobility = (x1, y1, x2, y2) => {
+export const arma: Mobility = (x1, y1, x2, y2) => {
   return rook(x1, y1, x2, y2) || fool(x1, y1, x2, y2);
 };
 
-const monk: Mobility = (x1, y1, x2, y2) => {
-  return diff(x1, x2) < 2|| fool(x1, y1, x2, y2);
+export const monk: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return (xd === 2 && yd === 0) || (xd === 0 && yd === 2);
 };
 
 // The standard can't move at all
