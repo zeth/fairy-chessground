@@ -148,36 +148,38 @@ export const monk: Mobility = (x1, y1, x2, y2) => {
 
 // The standard can't move at all
 // @ts-expect-error
-const standard: Mobility = (x1, y1, x2, y2) => {
+export const standard: Mobility = (x1, y1, x2, y2) => {
   return false;
 }
 
-/* Beta pieces */
-
-// TODO: make this correct
-const unicorn: Mobility = (x1, y1, x2, y2) => {
+export const goshawk: Mobility = (x1, y1, x2, y2) => {
   const xd = diff(x1, x2);
   const yd = diff(y1, y2);
-  return knight(x1, y1, x2, y2) || (xd === 1 && yd === 3) || (xd === 3 && yd === 1);
+  return (xd === 1 && yd === 3) || (xd === 3 && yd === 1);
 };
 
-// TODO: do we need to handle difference between move and take?
-const goshawk: Mobility = (x1, y1, x2, y2) => {
-  return bishop(x1, y1, x2, y2) || knight(x1, y1, x2, y2);
-};
-
-// TODO: do we need to handle difference between move and take?
-const cannon: Mobility = (x1, y1, x2, y2) => {
-  return rook(x1, y1, x2, y2) || knight(x1, y1, x2, y2);
+export const cannon: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return (xd === 3 && yd === 0) || (xd === 0 && yd === 3);
 };
 
 // @ts-expect-error
-const junk: Mobility = (x1, y1, x2, y2) => {
-  return x1 === x2;
+export const junk: Mobility = (x1, y1, x2, y2) => {
+  return y1 === y2;
 };
 
 export const zebra: Mobility = (x1, y1, x2, y2) => {
   const xd = diff(x1, x2);
   const yd = diff(y1, y2);
-  return (xd === 1 && yd === 2) || (xd === 2 && yd === 1);
+  return (xd === 1 && yd === 2) || (xd === 2 && yd === 1) || (xd === 1 && yd === 0);
+};
+
+export const unicorn: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  const demominator = Math.min(xd, yd);
+  const xn = xd / demominator;
+  const yn = yd / demominator;
+  return (xn === 1 && yn === 2) || (xn === 2 && yn === 1);
 };
