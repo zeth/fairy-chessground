@@ -1,3 +1,9 @@
+# Fairy Chessground
+
+Note, you probably want [fairyground](https://github.com/ianfab/fairyground).
+
+I probably want that too, but didn't know about it when I started my site. I will probably migrate to it at somepoint. But Rome was not built in a day. 
+
 # Chessground
 
 [![Continuous Integration](https://github.com/lichess-org/chessground/workflows/Continuous%20Integration/badge.svg)](https://github.com/lichess-org/chessground/actions?query=workflow%3A%22Continuous+Integration%22)
