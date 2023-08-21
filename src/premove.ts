@@ -20,7 +20,7 @@ export const knight: Mobility = (x1, y1, x2, y2) => {
   return (xd === 1 && yd === 2) || (xd === 2 && yd === 1);
 };
 
-const bishop: Mobility = (x1, y1, x2, y2) => {
+export const bishop: Mobility = (x1, y1, x2, y2) => {
   return diff(x1, x2) === diff(y1, y2);
 };
 
@@ -69,8 +69,117 @@ export function premove(pieces: cg.Pieces, key: cg.Key, canCastle: boolean): cg.
         ? rook
         : r === 'queen'
         ? queen
-        : king(piece.color, rookFilesOf(pieces, piece.color), canCastle);
+        : r === 'king'
+        ? king(piece.color, rookFilesOf(pieces, piece.color), canCastle)
+        : r === 'valet'
+        ? valet
+        : r === 'elephant'
+        ? elephant
+        : r === 'fool'
+        ? fool
+        : r === 'warden'
+        ? warden
+        : r === 'prince'
+        ? prince
+        : r === 'lady'
+        ? lady
+        : r === 'dragon'
+        ? dragon
+        : r === 'arma'
+        ? arma
+        : r === 'monk'
+        ? monk
+        : r === 'goshawk'
+        ? goshawk
+        : r === 'unicorn'
+        ? unicorn
+        : r === 'cannon'
+        ? cannon
+        : r === 'junk'
+        ? junk
+        : r === 'zebra'
+        ? zebra
+        : standard;
   return util.allPos
     .filter(pos2 => (pos[0] !== pos2[0] || pos[1] !== pos2[1]) && mobility(pos[0], pos[1], pos2[0], pos2[1]))
     .map(util.pos2key);
 }
+
+export const valet: Mobility = (x1, y1, x2, y2) => {
+  return diff(x1, x2) < 2 && diff(y1, y2) < 2;
+};
+
+
+export const elephant: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return xd === yd && xd === 2;
+};
+
+export const fool: Mobility = (x1, y1, x2, y2) => diff(x1, x2) === diff(y1, y2) && diff(x1, x2) === 1;
+
+export const warden: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return (xd === 1 && yd === 0) || (xd === 0 && yd === 1);
+};
+
+export const prince: Mobility = (x1, y1, x2, y2) => {
+  return valet(x1, y1, x2, y2) || knight(x1, y1, x2, y2);
+};
+
+export const lady: Mobility = (x1, y1, x2, y2) => {
+  return bishop(x1, y1, x2, y2) || warden(x1, y1, x2, y2);
+};
+
+export const dragon: Mobility = (x1, y1, x2, y2) => {
+  return knight(x1, y1, x2, y2) || queen(x1, y1, x2, y2);
+};
+
+export const arma: Mobility = (x1, y1, x2, y2) => {
+  return rook(x1, y1, x2, y2) || fool(x1, y1, x2, y2);
+};
+
+export const monk: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return (xd === 2 && yd === 0) || (xd === 0 && yd === 2);
+};
+
+// The standard can't move at all
+// @ts-expect-error
+export const standard: Mobility = (x1, y1, x2, y2) => {
+  return false;
+}
+
+export const goshawk: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return (xd === 1 && yd === 3) || (xd === 3 && yd === 1);
+};
+
+export const cannon: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return (xd === 3 && yd === 0) || (xd === 0 && yd === 3);
+};
+
+// @ts-expect-error
+export const junk: Mobility = (x1, y1, x2, y2) => {
+  return y1 === y2;
+};
+
+export const zebra: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  return (xd === 1 && yd === 2) || (xd === 2 && yd === 1) || (xd === 1 && yd === 0);
+};
+
+export const unicorn: Mobility = (x1, y1, x2, y2) => {
+  const xd = diff(x1, x2);
+  const yd = diff(y1, y2);
+  const demominator = Math.min(xd, yd);
+  const xn = xd / demominator;
+  const yn = yd / demominator;
+  return (xn === 1 && yn === 2) || (xn === 2 && yn === 1);
+};
